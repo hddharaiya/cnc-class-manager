@@ -146,6 +146,41 @@
 
   <!-- Custom JavaScript -->
   <script>
+
+    // Function to send data to Google Sheets
+function sendToGoogleSheets(studentData) {
+  const sheetAPI = "https://script.google.com/macros/s/AKfycbz6FFvEJnmV1sRc4vd9lHDoGZdQZo-opq5krdMLduhAUl5396KXDskew85DGKXRVV8dLQ/exec"; // Replace with your Apps Script URL
+
+  fetch(sheetAPI, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(studentData)
+  }).then(response => console.log("Data sent to Google Sheets"));
+}
+
+// Modify enrollment function to send data
+function enrollStudent(roll, name, batchTime, enrollmentDate) {
+  let students = getLocalStorage("students", []);
+  students.push({ roll, name, batchTime, enrollmentDate });
+  setLocalStorage("students", students);
+
+  sendToGoogleSheets({ roll, name, batchTime, enrollmentDate, date: "", topic: "", attendanceStatus: "Enrolled" });
+
+  alert("Student enrolled successfully.");
+}
+
+// Modify attendance function to send data
+function logAttendance(roll, date, topic) {
+  let attendance = getLocalStorage("attendance", {});
+  attendance[date] = { roll, topic, status: "Present" };
+  setLocalStorage("attendance", attendance);
+
+  sendToGoogleSheets({ roll, name: "", batchTime: "", enrollmentDate: "", date, topic, attendanceStatus: "Present" });
+
+  alert(`Attendance logged for ${date}.`);
+}
+
     // Helper functions to get/set JSON data in localStorage
     function getLocalStorage(key, defaultValue) {
       const data = localStorage.getItem(key);
