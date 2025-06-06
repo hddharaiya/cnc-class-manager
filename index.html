@@ -182,13 +182,24 @@ function logAttendance(roll, date, topic) {
 }
 
     // Helper functions to get/set JSON data in localStorage
-    function getLocalStorage(key, defaultValue) {
-      const data = localStorage.getItem(key);
-      return data ? JSON.parse(data) : defaultValue;
-    }
-    function setLocalStorage(key, value) {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
+    function doPost(e) {
+  var sheet = SpreadsheetApp.openById("YOUR_SHEET_ID").getSheetByName("Sheet1");
+  var data = JSON.parse(e.postData.contents);
+
+  sheet.appendRow([
+    new Date(),  // Timestamp
+    data.roll,
+    data.name,
+    data.batchTime,
+    data.enrollmentDate,
+    data.date,
+    data.topic,
+    data.attendanceStatus
+  ]);
+  
+  return ContentService.createTextOutput("Success");
+}
+
 
     // Enroll a new student
     function enrollStudent(roll, name, batchTime, enrollmentDate) {
