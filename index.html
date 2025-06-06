@@ -183,7 +183,7 @@ function logAttendance(roll, date, topic) {
 
     // Helper functions to get/set JSON data in localStorage
     function doPost(e) {
-  var sheet = SpreadsheetApp.openById("YOUR_SHEET_ID").getSheetByName("Sheet1");
+  var sheet = SpreadsheetApp.openById("https://docs.google.com/spreadsheets/d/1dQJ2mFyBK6k23hLB8nARyra0oQsKfXUqX7WpXxibP1Y/edit?gid=0#gid=0").getSheetByName("CNC_Class_Manager_Data");
   var data = JSON.parse(e.postData.contents);
 
   sheet.appendRow([
